@@ -2,15 +2,14 @@ import java.util.ArrayList;
 
 public class Node {
     private int id;
-    private int value;
+    private String value;
     private int parent;
     private double weight;
-//    private ArrayList<Node> child;
+    private ArrayList<Node> child;
 
-    Node(int id, int value, double weight) {
-        this.id = id;
-        this.value = value;
-        this.weight = weight;
+    Node(int id, String value) {
+        setId(id);
+        setValue(value);
     }
 
     public int getId() {
@@ -21,11 +20,11 @@ public class Node {
         this.id = id;
     }
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -45,11 +44,11 @@ public class Node {
         this.parent = parent;
     }
 
-//    public ArrayList<Node> getChild() {
-//        return child;
-//    }
-//
-//    public void setChild(ArrayList<Node> child) {
-//        this.child = child;
-//    }
+    public ArrayList<Node> getChild() {
+        return child;
+    }
+
+    public void setChild(ArrayList<Node> child) {
+        this.child = child;
+    }
 }

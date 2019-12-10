@@ -4,32 +4,37 @@ import java.util.Scanner;
 public class NIM {
     public static void main(String[] args) {
         int turn = 0, select, divide;
-        boolean turnStatus = true;
+        boolean checkSelect;
         String valueString = "511";
         ArrayList<Node> nodes = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
 
-        nodes.add(new Node(nodes.size(), Integer.parseInt(valueString), 0.5));
-        nodes.add(new Node(nodes.size(), Integer.parseInt(valueString), 0.5));
+        nodes.add(new Node(nodes.size(), valueString));
 
-        System.out.println(nodes.size());
-
-        while(checkValue(valueString) && turnStatus) {
+        while(checkValue(valueString)) {
             System.out.print("Jumlah korek awal: ");
             printValueString(valueString);
 
             System.out.println("\nPilih korek yang ingin dipisah: ");
             select = scan.nextInt();
 
-            System.out.println("Masukkan jumlah pembagi terbesar: ");
-            divide = scan.nextInt();
-            if(divide > select){
-                System.out.println("Maaf, nilai pembagi terlalu besar");
-                divide = 0;
+            if(select == 2 || select == 1) {
+                System.out.println("Maaf, korek tidak dapat dibagi");
+                continue;
             }
-            divideStick(valueString, select, divide);
 
-            turnStatus = false;
+            checkSelect = checkSelect(valueString, select);
+
+            if (checkSelect) {
+                System.out.println("Masukkan jumlah pembagi terbesar: ");
+                divide = scan.nextInt();
+                if (divide > select) {
+                    System.out.println("Maaf, nilai pembagi terlalu besar");
+                    divide = 0;
+                }
+                valueString = divideStick(valueString, select, divide);
+            }
+            ++turn;
         }
     }
 
@@ -58,15 +63,55 @@ public class NIM {
         }
     }
 
-    private static void divideStick(String valueString, int select, int divide) {
+    private static boolean checkSelect(String valueString, int select) {
         int[] valueInt = new int[valueString.length()];
+        boolean checkSelect = false, constraint = false;
+
+        for (int i=0; i<valueString.length(); i++){
+            valueInt[i] = Integer.parseInt(String.valueOf(valueString.charAt(i)));
+
+            if (valueInt[i] == select){
+                checkSelect = true;
+            } else if (valueInt[i] == 2 || valueInt[i] == 1){
+                constraint = true;
+            }
+        }
+
+        if (!checkSelect){
+            System.out.println("Nilai yang dipilih tidak ada");
+            return false;
+        }
+        if (checkSelect && constraint){
+
+        }
+
+        return true;
+    }
+
+    private static String divideStick(String valueString, int select, int divide) {
+        int[] valueInt = new int[valueString.length()];
+        int divideResult;
+        String result;
 
         if(divide != 0){
             for (int i=0; i<valueString.length(); i++){
                 valueInt[i] = Integer.parseInt(String.valueOf(valueString.charAt(i)));
-                System.out.print(valueInt[i] + " ");
             }
         }
+
+        divideResult = select-divide;
+
+        result = divide + Integer.toString(divideResult);
+
+        for (int value: valueInt) {
+            if (value != select) {
+                result = result + value;
+            }
+        }
+
+        System.out.println("\nHasil bagi: " + result);
+
+        return result;
     }
 
     public void greedy() {
