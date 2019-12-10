@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class NIM {
     public static void main(String[] args) {
         int turn = 0, select, divide;
-        boolean checkSelect;
+        boolean checkSelect, checkConstraint;
         String valueString = "511";
         ArrayList<Node> nodes = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
@@ -34,6 +34,13 @@ public class NIM {
                 }
                 valueString = divideStick(valueString, select, divide);
             }
+
+            checkConstraint = checkConstraint(valueString);
+
+            if (!checkConstraint){
+                break;
+            }
+
             ++turn;
         }
     }
@@ -65,15 +72,13 @@ public class NIM {
 
     private static boolean checkSelect(String valueString, int select) {
         int[] valueInt = new int[valueString.length()];
-        boolean checkSelect = false, constraint = false;
+        boolean checkSelect = false;
 
         for (int i=0; i<valueString.length(); i++){
             valueInt[i] = Integer.parseInt(String.valueOf(valueString.charAt(i)));
 
             if (valueInt[i] == select){
                 checkSelect = true;
-            } else if (valueInt[i] == 2 || valueInt[i] == 1){
-                constraint = true;
             }
         }
 
@@ -81,8 +86,25 @@ public class NIM {
             System.out.println("Nilai yang dipilih tidak ada");
             return false;
         }
-        if (checkSelect && constraint){
 
+        return true;
+    }
+
+    private static boolean checkConstraint(String valueString){
+        int[] valueInt = new int[valueString.length()];
+        int checkConstraint = 0;
+
+        for (int i=0; i<valueString.length(); i++){
+            valueInt[i] = Integer.parseInt(String.valueOf(valueString.charAt(i)));
+
+            if (valueInt[i] == 2 || valueInt[i] == 1){
+                ++checkConstraint;
+            }
+        }
+
+        if (checkConstraint == valueInt.length){
+            System.out.println("Anda kalah! Coba lagi ya! Semangatt!!");
+            return false;
         }
 
         return true;
